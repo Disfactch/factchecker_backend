@@ -74,7 +74,7 @@ http://110.76.73.55:8080/factchecker/factchecked/rest/aHR0cHM6Gljcy9hbGw=
 해당 프로그램은 Google Cloud Platform으로 제공되고 있는 디스팩치의 데이터베이스 서버 'fake-news-base'가 켜져있어야만 작동하도록 설계되어 있으며, 따라서 동작이 필요하신 분들은 사전에 crovas@kaist.ac.kr (황병호) 로 문의해주시기 바랍니다.
 
 ### STEP 1: Google Cloud Platform Settings
-1. Google Cloud SDK를 설치합니다. 단, 설치과정에서 Google Cloud SDK Shell을 반드시 포함하여 설치합니다. Shell의 세팅 또한 disfactch owner들이 가진 설정을 이용해 세팅해야하는데, sdk의 세팅 부분은 모두 프로젝트의 config.py, app.yaml파일에 쓰여있습니다. : https://cloud.google.com/sdk/docs/install
+1. Google Cloud SDK를 설치합니다. 단, 설치과정에서 Google Cloud SDK Shell을 반드시 포함하여 설치합니다. Shell의 세팅 또한 disfactch owner들이 가진 설정을 이용해 세팅해야하는데, sdk의 세팅 부분은 모두 프로젝트의 config.py, app.yaml파일에 쓰여있습니다. Mac의 경우 환경에 따라 Shell이 설치되지 않음을 확인했으니 참고해주시기 바랍니다: https://cloud.google.com/sdk/docs/install
 2. Anaconda를 설치합니다. 이때, Anaconda Prompt (anaconda3)를 통해 명령을 실행하게 되니 반드시 확인합니다: https://www.anaconda.com/products/individual-d
    
 ### STEP 2: Install Requirements
