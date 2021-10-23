@@ -59,6 +59,71 @@
 ### Web page
 페이지를 제어하는 파일인 /factcode/crud.py는 template 폴더 및 디자인을 담당하는 static/css folder와 상호작용한다. 
 
+### API
+백엔드에서는 API를 제공합니다!
+```
+http://110.76.73.55:8080/factchecker/factchecked/<type>/<link>
+```
+이 때 링크는 btoa 인코딩이 되어있는 상태여야합니다. 예시는 다음과 같습니다.
+```
+http://110.76.73.55:8080/factchecker/factchecked/rest/aHR0cHM6Gljcy9hbGw= 
+```
+
+# Work Flow
+### STEP 0: Disfactch Owner Permission
+해당 프로그램은 Google Cloud Platform으로 제공되고 있는 디스팩치의 데이터베이스 서버 'fake-news-base'가 켜져있어야만 작동하도록 설계되어 있으며, 따라서 동작이 필요하신 분들은 사전에 crovas@kaist.ac.kr (황병호) 로 문의해주시기 바랍니다.
+
+### STEP 1: Google Cloud Platform Settings
+1. Google Cloud SDK를 설치합니다. 단, 설치과정에서 Google Cloud SDK Shell을 반드시 포함하여 설치합니다. Shell의 세팅 또한 disfactch owner들이 가진 설정을 이용해 세팅해야하는데, sdk의 세팅 부분은 모두 프로젝트의 config.py, app.yaml파일에 쓰여있습니다. : https://cloud.google.com/sdk/docs/install
+2. Anaconda를 설치합니다. 이때, Anaconda Prompt (anaconda3)를 통해 명령을 실행하게 되니 반드시 확인합니다: https://www.anaconda.com/products/individual-d
+   
+### STEP 2: Install Requirements
+해당과정은 개별 환경에 따라 다를 수 있습니다. 현재 requirements 양식은 Google Cloud Platform App Engine에 deploy하기 위한 목적으로 작성되어 있으므로, 로컬 컴퓨터 / 로컬 서버에서 작동시켜야하는 상황의 경우 requirements 파일을 열어 필요한 라이브러리를 개별적으로 다운로드 받아주시기 바랍니다.
+
+1. 가상환경 설치: Anaconda Prompt (Anaconda3) 에 다음과 같이 입력합니다.
+```
+conda create -n [Your name for environment] python=[Your python version] anaconda
+```
+예를 들어,
+```
+conda create -n factchecker python=3.6.13 anaconda
+```
+2. 이 프로젝트의 디렉토리까지 들어와줍니다.
+3. requirements 설치
+```
+pip install -r requirements.txt
+```
+
+### STEP 3: KoNLPy, WordtoVec Settings
+1. ko.bin, ko.tsv를 설치해야 합니다. 용량이 너무 큰 관계로 파일을 커밋하지 못하고, 드라이브에 업로드 되어 있는 형태입니다: https://github.com/Kyubyong/wordvectors
+2. 다운 받은 ko.bin, ko.tsv file 을 따로 content라는 폴더 안에 넣고, content 폴더는 디렉토리에 넣습니다.
+```
+.../factcode/content
+```
+3. 자연어 처리 모델 KoNLPy 작동을 위한 JAVA_HOME 세팅을 완료해야합니다. 환경변수 설정까지 모두 완료했는지 반드시 확인합니다. 자연어 처리 모델의 세팅은 환경에 따라 굉장히 다양한 요소를 고려해야하기에, KoNLPy 홈페이지에서 직접 확인하는 것을 권장합니다: https://konlpy.org/ko/latest/
+4. 본인의 파이썬 버전에 맞는 JPype를 설치합니다: https://www.lfd.uci.edu/~gohlke/pythonlibs/#jpype (pip 설치 권장)
+```
+pip install [Your Jpype filename]
+```
+예를 들어,
+```
+pip install JPype1‑1.3.0‑cp310‑cp310‑win_amd64.whl
+```
+
+### STEP 4: Model Settings
+Model.zip을 열어 mnist_mlp_model.h5 , positivitymodel.p 파일을 main.py와 같은 폴더 안으로 옮겨 담습니다.
+    
+### STEP 5: Local Machine Running
+1. Setup SDK: 'Ready for new connection'이라는 문구가 출력되면 정상 작동 중인 것입니다. 작동에 따라 여러 로그가 추가적으로 출력됩니다.
+```
+cloud_sql_proxy.exe -instances="fake-news-base:asia-northeast3:fakenews"=tcp:3306
+```
+2. Setup Anaconda Prompt에서 이 프로젝트의 디렉토리로 이동합니다.
+3. Run main
+```
+python main.py
+```
+
 # Structure
 웹을 통해 기사의 링크를 입력할 수 있으며, 그에 따라 신뢰도가 출력되는 기능을 가지고 있다. flask를 이용해 HTML5와 python을 연동하며, 이는 인공지능 라이브러리 tensorflow를 보다 효과적으로 이용하기 위함이다.
 <p align="center">
@@ -125,78 +190,6 @@
     <img src="https://user-images.githubusercontent.com/86072294/131957176-16a807fd-00a9-4c39-bc72-234df00d12fa.PNG" width="700px">
     <a href="https://github.com/"><img alt="" src=""></a>
 </p>
-
-# Work Flow
-### STEP 1: Google Cloud Platform Settings
-1. Install Google Cloud SDK: https://cloud.google.com/sdk/docs/install
-2. Install Anaconda: https://www.anaconda.com/products/individual-d
-3. (Optional) Create database in Google Cloud SQL
-4. (Optional) Edit database, sql, python files in (config.py, app.yaml, tox.ini)
-5. Turn ON the SQL instance on Google Cloud Platform (This has to be done by authenticator)
-
-
-### STEP 2: Install Requirements
-1. On Anaconda Prompt (Anaconda3)
-```
-conda create -n [Your name for environment] python=[Your python version] anaconda
-```
-For example,
-```
-conda create -n factchecker python=3.6.13 anaconda
-```
-2. Find your directory to this project
-3. Install requirements
-```
-pip install -r requirements.txt
-```
-
-
-### STEP 3: KoNLPy, WordtoVec Settings
-1. Install chrome driver for your version: https://chromedriver.chromium.org/downloads
-2. Install ko.bin, ko.tsv here: https://github.com/Kyubyong/wordvectors
-3. Put your chrome driver .exe file to
-```
-.../selenium
-```
-4. Put your ko.bin, ko.tsv file to
-```
-.../factcode/CrawlMorpheme/content
-```
-5. Make JAVA HOME Settings for usual KoNLPy settings (Environmental Variables)
-6. Install JPype that fits your python: https://www.lfd.uci.edu/~gohlke/pythonlibs/#jpype , do the pip installation
-```
-pip install [Your Jpype filename]
-```
-For example,
-```
-pip install JPype1‑1.3.0‑cp310‑cp310‑win_amd64.whl
-```
-
-### STEP 4: Directory Settings
-1. Go to the file /factcode/settingbox.py
-There are three directories for the setting, only 'Absolute path' works.
-2. Run settingbox.py
-
-### STEP 5: Local Machine Running
-1. Setup SDK
-```
-cloud_sql_proxy.exe -instances="fake-news-base:asia-northeast3:fakenews"=tcp:3306
-```
-2. Setup Anaconda Prompt, go to environment you made, then go to exact project file
-3. Create Table
-```
-python factcode\model_cloudsql.py
-```
-4. Run main
-```
-python main.py
-```
-
-### STEP 6: Update Application
-```
-gcloud app deploy
-```
-
 
 # License
 ### 1. Team DISFACTCH
