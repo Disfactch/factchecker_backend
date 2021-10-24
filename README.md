@@ -43,7 +43,7 @@
  
 |Name|<a href="https://github.com/CrovaS">Byeongho Hwang<a>|<a href="https://github.com/subinga18">Subin Kim</a>|<a href="https://github.com/yunzi125">Yunji Lee</a>|<a href="https://github.com/jhn90928">Hanna Jeon</a>|
 |:--|:--:|:--:|:--:|:--:|
-|**Role**|Sudden<br>SQL Search<br>Function Gathering<br>webpage|Conjunction<br>Crawling(bs)<br>Word2Vec|Causal<br>Propernoun|Summaries<br>Positivity Check|
+|**Role**|Sudden<br>SQL Search<br>Function Gathering<br>webpage|Conjunction<br>Crawling(bs)<br>Word2Vec<br>Android app|Causal<br>Propernoun<br>Android app|Summaries<br>Positivity Check|
 
 
 # Function
